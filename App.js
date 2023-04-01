@@ -7,14 +7,14 @@ const cache = new NodeCache({ stdTTL: 750 });
 
 const App = express();
 App.use(express.json());
-App.use(cors());
+App.use(cors()); // * all origins allowed.
 
 App.get('/', (req, res) => {
     res.send({ 
         status: res.statusCode,
-        github_repository: "https://github.com/rohitjethoe/boekjes-api" 
+        github_repository: "https://github.com/rohitjethoe/nodejs-bol-wrapper" 
     });
-})
+});
 
 const getBearer = async () => {
     const response = await fetch('https://login.bol.com/token?grant_type=client_credentials', {
@@ -29,37 +29,43 @@ const getBearer = async () => {
 }
 
 App.get('/api', async (req, res) => {
-    if (cache.has('bearer')) {
-        const ping = await fetch('https://api.bol.com/utils/v4/ping', {
-            method: 'GET',
-            headers: {
-                Accept: "application/json",
-                'Content-Type': 'application/json',
-                Authorization: "Bearer " + cache.get('bearer').access_token
+    const key = req.query['api-key'];
+
+    if (key === process.env.API_KEY) { 
+        if (cache.has('bearer')) {
+            const ping = await fetch('https://api.bol.com/utils/v4/ping', {
+                method: 'GET',
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json',
+                    Authorization: "Bearer " + cache.get('bearer').access_token
+                }
+            });
+
+            console.log(ping);
+
+            if (ping.status === 200) {
+                res.send({data: cache.get('bearer')});
+            } else if (ping.status === 500) {
+                const bearer = await getBearer();
+                cache.set('bearer', bearer);
+                res.send({data: { 
+                    fresh: true,
+                    bearer 
+                }})
+            } else {
+                res.send({status: ping.status})
             }
-        });
-
-        console.log(ping);
-
-        if (ping.status === 200) {
-            res.send({data: cache.get('bearer')});
-        } else if (ping.status === 500) {
+        } else {
             const bearer = await getBearer();
             cache.set('bearer', bearer);
             res.send({data: { 
                 fresh: true,
                 bearer 
-            }})
-        } else {
-            res.send({status: ping.status})
+            }});
         }
     } else {
-        const bearer = await getBearer();
-        cache.set('bearer', bearer);
-        res.send({data: { 
-            fresh: true,
-            bearer 
-        }});
+        res.send({status: 401, message: "Unauthorized"});
     }
 })
 
