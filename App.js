@@ -72,7 +72,7 @@ App.get('/api', async (req, res) => {
             }});
         }
     } else {
-        res.send({status: 401, message: "Unauthorized"});
+        res.send({status: 401, message: "Unauthorized, please provide a valid API key."});
     }
 });
 
