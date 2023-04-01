@@ -39,6 +39,7 @@
 * [About the Project](#about-the-project)
     * [Built With](#built-with)
 * [Features](#features)
+    * [Installation](#installation)
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project

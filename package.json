@@ -1,14 +1,15 @@
 {
-  "name": "boekjes-backend",
+  "name": "nodejs-bol-wrapper",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": " A Node.js wrapper for the Bol.com API. Limiting calls for JWT token by using cache. ",
+  "main": "App.js",
   "scripts": {
-    "dev": "nodemon App.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node App.js",
+    "build": "npm install",
+    "run:serve": "nodemon App.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Rohit Jethoe",
+  "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
