@@ -66,15 +66,15 @@ git clone https://github.com/rohitjethoe/nodejs-bol-wrapper.git
 ```
 2. Install NPM packages
 ```sh
-npm install
+npm run build
 ```
 or
 ```sh
-npm install
+yarn run build
 ```
-2. Load MacOS/Windows Application
+3. Run Express server for development
 ```sh
-npm run dev
+npm run serve
 ```
 
 <!-- MARKDOWN LINKS & IMAGES -->
