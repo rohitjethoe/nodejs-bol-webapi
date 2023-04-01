@@ -42,7 +42,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-A Node.js wrapper for the Bol.com API. Limiting calls for JWT token by using cache.
+A Node.js wrapper for the Bol.com API. Bol.com explicitly asks to limit calls to retrieve your JWT token. However the token expires every 10 minutes. The express server in this project requests the JWT token and stores it by caching. Limiting calls for JWT token by using cache memory to retrieve the older (working) token.
 
 Feel free fork and edit this project to your liking.
 

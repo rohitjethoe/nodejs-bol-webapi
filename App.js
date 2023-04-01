@@ -45,13 +45,18 @@ App.get('/api', async (req, res) => {
             console.log(ping);
 
             if (ping.status === 200) {
-                res.send({data: cache.get('bearer')});
+                res.send({
+                    status: res.statusCode,
+                    data: cache.get('bearer')
+                });
             } else if (ping.status === 500) {
                 const bearer = await getBearer();
                 cache.set('bearer', bearer);
-                res.send({data: { 
-                    fresh: true,
-                    bearer 
+                res.send({
+                    status: res.statusCode,
+                    data: { 
+                        fresh: true,
+                        bearer 
                 }})
             } else {
                 res.send({status: ping.status})
@@ -59,15 +64,17 @@ App.get('/api', async (req, res) => {
         } else {
             const bearer = await getBearer();
             cache.set('bearer', bearer);
-            res.send({data: { 
-                fresh: true,
-                bearer 
+            res.send({
+                status: res.statusCode,
+                data: { 
+                    fresh: true,
+                    bearer 
             }});
         }
     } else {
         res.send({status: 401, message: "Unauthorized"});
     }
-})
+});
 
 const PORT = process.env.PORT || 3000;
 
