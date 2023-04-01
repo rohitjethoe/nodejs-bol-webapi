@@ -56,7 +56,9 @@ Feel free fork and edit this project to your liking.
 
 ## Features
 v1.0.0
-- Caching JWT token and only makes new call to Bol.com API when expired.
+- Retrieve and caching JWT Token
+- Validate JWT Token and if unvalid replacing the token.
+- Built-in books call for Bol.com products in category books.
 
 ### Installation
 
