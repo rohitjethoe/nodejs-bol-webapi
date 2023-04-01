@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const cache = new NodeCache({ stdTTL: 750 });
 
-const App = express();
+const App = module.exports = express();
 App.use(express.json());
 App.use(cors()); // * all origins allowed.
 
@@ -76,6 +76,12 @@ App.get('/api', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
+App.use((req, res) => {
+    res.status(404);
+    res.send({ status: res.statusCode, error: `Sorry, I couldn't find '${req.originalUrl}'` });
+});
 
-App.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+if (!module.partent) {
+    const PORT = process.env.PORT || 3000;
+    App.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+}
