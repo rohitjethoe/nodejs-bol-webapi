@@ -7,9 +7,16 @@ require("dotenv").config();
 
 const cache = new NodeCache({ stdTTL: 750 });
 
-let corsOptions = {
-    origin: 'http://boekje.rohit.nl',
-    optionsSuccessStatus: 200
+const whitelist = ['https://boekje.rohit.nl', 'http://boekje.rohit.nl'];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
 }
 
 const App = module.exports = express();
