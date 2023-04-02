@@ -47,7 +47,7 @@ App.get('/api/books/:query', async (req, res) => {
         });
 
         const data = await response.json();
-        res.send({data});
+        res.send({status: res.statusCode, data});
     } else {
         res.send({status: 401, message: "Unauthorized, please provide a valid API key."});
     }
