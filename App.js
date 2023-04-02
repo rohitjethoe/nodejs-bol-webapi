@@ -14,7 +14,7 @@ let corsOptions = {
 
 const App = module.exports = express();
 App.use(express.json());
-App.use(cors()); // * all origins allowed.
+App.use(cors(corsOptions)); // * all origins allowed.
 
 App.get('/', (req, res) => {
     res.send({ 
