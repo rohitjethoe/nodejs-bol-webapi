@@ -7,6 +7,11 @@ require("dotenv").config();
 
 const cache = new NodeCache({ stdTTL: 750 });
 
+let corsOptions = {
+    origin: 'http://boekje.rohit.nl',
+    optionsSuccessStatus: 200
+}
+
 const App = module.exports = express();
 App.use(express.json());
 App.use(cors()); // * all origins allowed.
