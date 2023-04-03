@@ -21,7 +21,7 @@ const corsOptions = {
 
 const App = module.exports = express();
 App.use(express.json());
-App.use(cors(corsOptions)); // * all origins allowed.
+App.use(cors(corsOptions));
 
 App.get('/', (req, res) => {
     res.send({ 
@@ -50,16 +50,20 @@ App.get('/api/books/:query', async (req, res) => {
         const query = req.params.query
         const bearer = await BearerController.validateBearer(req, res);
 
-        const response = await fetch(`https://api.bol.com/catalog/v4/search?q=${query}&ids=8299`, {
-            headers: {
-                Accept: "application/json",
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${bearer.data.bearer.access_token}`
-            }
-        });
+        if (bearer.status === 200) {
+            const response = await fetch(`https://api.bol.com/catalog/v4/search?q=${query}&ids=8299&offers=all`, {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${bearer.data.bearer.access_token}`
+                }
+            });
 
-        const data = await response.json();
-        res.send({status: res.statusCode, data});
+            const data = await response.json();
+            res.send({status: res.statusCode, data});
+        } else {
+            res.send({status: bearer.status, message: "Error, too many requests."});
+        }
     } else {
         res.send({status: 401, message: "Unauthorized, please provide a valid API key."});
     }
